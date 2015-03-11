@@ -7,13 +7,33 @@
 //
 
 #import "AJCAppDelegate.h"
+#import "AJCPhotosViewController.h"
+
+#import <SimpleAuth/SimpleAuth.h>
 
 @implementation AJCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    SimpleAuth.configuration[@"instagram"] = @{
+      @"client_id" : @"371a81031db14c6f8d50d5ec64207b35",
+      SimpleAuthRedirectURIKey : @"photobombers://auth/instagram"
+    };
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    
+    AJCPhotosViewController *photosViewController = [[AJCPhotosViewController alloc] init];
+    // Hacemos un navigationController usando nuestro photosViewController para utilizarlo como rootViewController
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:photosViewController];
+    
+    UINavigationBar *navigationBar = navigationController.navigationBar;
+    navigationBar.barTintColor = [UIColor colorWithRed:242.0/255.0 green:122.0/255.0 blue:87.0/255.0 alpha:1.0];
+    navigationBar.barStyle = UIBarStyleBlackOpaque;
+    
+    //Usamos el navigationController como rootViewController para tener la barra superior
+    self.window.rootViewController = navigationController;
+
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
